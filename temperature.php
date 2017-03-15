@@ -3,6 +3,14 @@
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__FILE__) . DS);
 
+function returnRandomRGBColour() {
+	$r = rand(128,255);
+	$g = rand(90,255);
+	$b = rand(75,255);
+	$ret = "$r,$g,$b";
+	return $ret;
+}
+
 function appendStringToFile($filename, $string) {
 	$fh = fopen($filename, 'a');
 	$string = $string . "\n";
@@ -75,14 +83,10 @@ function returnChartistString(Array $filenameArray) {
 	
 	ksort($seriesStringsArray);
 	
-	$colourArray = Array('red','blue','green','yellow');
-	
 	$seriesString = '';
-	$counter = 0;
 	foreach($seriesStringsArray as $key=>$value) {
-		//TODO change colors
-		$seriesString .= "{label: '$key', data: [$value], backgroundColor: color(window.chartColors.$colourArray[$counter]).alpha(0.2).rgbString(), borderColor: window.chartColors.$colourArray[$counter], fill: true,},";
-		$counter++;
+		$colour = returnRandomRGBColour();
+		$seriesString .= "{label: '$key', data: [$value], backgroundColor: 'rgba($colour,0.9)', borderColor: 'rgba($colour,1)', fill: false,},";
 	}
 	
 	$chartString = "data: {labels: [$labelString], datasets: [$seriesString],},";
@@ -179,3 +183,4 @@ $chartString = returnChartistString($filenameArray);
 </body>
 
 </html>
+
